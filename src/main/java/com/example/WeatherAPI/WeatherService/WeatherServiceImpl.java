@@ -1,0 +1,118 @@
+package com.example.WeatherAPI.WeatherService;
+
+import com.example.WeatherAPI.WeatherRepository.FakeRepository;
+import com.example.WeatherAPI.WeatherRepository.WeatherRepository;
+import com.example.WeatherAPI.entity.FakeRow;
+import com.example.WeatherAPI.entity.WeatherColumn;
+import com.example.WeatherAPI.model.FakeRecord;
+import com.example.WeatherAPI.model.WeatherRecord;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.springframework.beans.BeanUtils;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.List;
+import java.util.stream.Collectors;
+
+
+@Service
+public class WeatherServiceImpl  implements WeatherService
+{
+    private final WeatherRepository weatherRepository;
+
+    private final FakeRepository fakeRepository;
+
+    public WeatherServiceImpl(WeatherRepository weatherRepository, FakeRepository fakeRepository) {
+        this.weatherRepository = weatherRepository;
+        this.fakeRepository = fakeRepository;
+    }
+    @Override
+    public WeatherRecord getLatestRecord() {
+        WeatherColumn weatherColumn  = weatherRepository.findTopByOrderByIdDesc();
+        WeatherRecord weatherRecord = new WeatherRecord();
+        BeanUtils.copyProperties(weatherColumn, weatherRecord);
+        weatherRecord.setTimeString(String.valueOf(weatherColumn.getDateTime()));
+        return weatherRecord;
+    }
+
+    @Override
+    public List<FakeRecord> getListRecords()
+    {
+        List<FakeRow> fakeRowList = fakeRepository.findAll();
+        List<FakeRecord> fakeRecordList = fakeRowList
+                .stream().map(
+                        row -> new FakeRecord( row.getTemperature(),
+                                row.getHumidity(),
+                                row.getWindSpeed())
+                ).collect(Collectors.toList());
+        return fakeRecordList;
+    }
+
+    @Override
+    public List<FakeRecord> getDiagramRecords()
+    {
+        List<FakeRow> fakeRowList = fakeRepository.findTop30ByOrderByIdDesc();
+        List<FakeRecord> fakeRecordList = fakeRowList
+                .stream().map(
+                        row -> new FakeRecord(
+                                row.getTemperature(),
+                                row.getHumidity(),
+                                row.getWindSpeed()
+                        )
+                ).collect(Collectors.toList());
+        return fakeRecordList;
+    }
+
+    @Override
+    public WeatherColumn addLatest() {
+        WeatherColumn weatherColumn = new WeatherColumn();
+
+        RestTemplate restTemplate =  new RestTemplate();
+        String  temperature = "https://io.adafruit.com/api/v2/fong1668vn/feeds/weather-temp";
+        ResponseEntity<String> responseEntity = restTemplate.getForEntity(temperature, String.class);
+        if(responseEntity.getStatusCode() == HttpStatus.OK)
+        {
+            JSONArray jsonArray = new JSONArray(responseEntity.getBody());
+            JSONObject jsonObject = (JSONObject) jsonArray.get(0);
+            weatherColumn.setTemperature(jsonObject.getInt("value"));
+            Instant instant = Instant.parse(jsonObject.getString("created_at"));
+            weatherColumn.setDateTime(LocalDateTime.ofInstant(instant, ZoneId.of("Asia/Ho_Chi_Minh")));
+        }
+        else
+        {
+            throw  new IllegalStateException("We could not get the result");
+        }
+        String humidity = "https://io.adafruit.com/api/v2/fong1668vn/feeds/weather-humi";
+        responseEntity = restTemplate.getForEntity(humidity, String.class);
+        if(responseEntity.getStatusCode() == HttpStatus.OK)
+        {
+            JSONArray jsonArray = new JSONArray(responseEntity.getBody());
+            JSONObject jsonObject = (JSONObject) jsonArray.get(0);
+            weatherColumn.setHumidity(jsonObject.getInt("value"));
+        }
+        else
+        {
+            throw  new IllegalStateException("We could not get the result");
+        }
+        String windSpeed = "https://io.adafruit.com/api/v2/fong1668vn/feeds/weather-wind";
+        responseEntity = restTemplate.getForEntity(windSpeed, String.class);
+        if(responseEntity.getStatusCode() == HttpStatus.OK)
+        {
+            JSONArray jsonArray = new JSONArray(responseEntity.getBody());
+            JSONObject jsonObject = (JSONObject) jsonArray.get(0);
+            weatherColumn.setWindSpeed(jsonObject.getFloat("value") * ((float)5/1023) + 2);
+        }
+        else
+        {
+            throw  new IllegalStateException("We could not get the result");
+        }
+        weatherRepository.save(weatherColumn);
+        return weatherColumn;
+    }
+}

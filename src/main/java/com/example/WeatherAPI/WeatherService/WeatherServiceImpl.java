@@ -80,7 +80,7 @@ public class WeatherServiceImpl  implements WeatherService
         {
             JSONArray jsonArray = new JSONArray(responseEntity.getBody());
             JSONObject jsonObject = (JSONObject) jsonArray.get(0);
-            weatherColumn.setTemperature(jsonObject.getInt("value"));
+            weatherColumn.setTemperature(jsonObject.getInt("last_value"));
             Instant instant = Instant.parse(jsonObject.getString("created_at"));
             weatherColumn.setDateTime(LocalDateTime.ofInstant(instant, ZoneId.of("Asia/Ho_Chi_Minh")));
         }
@@ -94,7 +94,7 @@ public class WeatherServiceImpl  implements WeatherService
         {
             JSONArray jsonArray = new JSONArray(responseEntity.getBody());
             JSONObject jsonObject = (JSONObject) jsonArray.get(0);
-            weatherColumn.setHumidity(jsonObject.getInt("value"));
+            weatherColumn.setHumidity(jsonObject.getInt("last_value"));
         }
         else
         {
@@ -106,7 +106,7 @@ public class WeatherServiceImpl  implements WeatherService
         {
             JSONArray jsonArray = new JSONArray(responseEntity.getBody());
             JSONObject jsonObject = (JSONObject) jsonArray.get(0);
-            weatherColumn.setWindSpeed(jsonObject.getFloat("value") * ((float)5/1023) + 2);
+            weatherColumn.setWindSpeed(jsonObject.getFloat("last_value") * ((float)5/1023) + 2);
         }
         else
         {

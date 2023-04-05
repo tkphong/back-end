@@ -78,8 +78,7 @@ public class WeatherServiceImpl  implements WeatherService
         ResponseEntity<String> responseEntity = restTemplate.getForEntity(temperature, String.class);
         if(responseEntity.getStatusCode() == HttpStatus.OK)
         {
-            JSONArray jsonArray = new JSONArray(responseEntity.getBody());
-            JSONObject jsonObject = (JSONObject) jsonArray.get(0);
+            JSONObject jsonObject = new JSONObject(responseEntity.getBody());
             weatherColumn.setTemperature(jsonObject.getInt("last_value"));
             Instant instant = Instant.parse(jsonObject.getString("created_at"));
             weatherColumn.setDateTime(LocalDateTime.ofInstant(instant, ZoneId.of("Asia/Ho_Chi_Minh")));
@@ -92,9 +91,9 @@ public class WeatherServiceImpl  implements WeatherService
         responseEntity = restTemplate.getForEntity(humidity, String.class);
         if(responseEntity.getStatusCode() == HttpStatus.OK)
         {
-            JSONArray jsonArray = new JSONArray(responseEntity.getBody());
-            JSONObject jsonObject = (JSONObject) jsonArray.get(0);
+            JSONObject jsonObject = new JSONObject(responseEntity.getBody());
             weatherColumn.setHumidity(jsonObject.getInt("last_value"));
+            Instant instant = Instant.parse(jsonObject.getString("created_at"));
         }
         else
         {
@@ -104,10 +103,9 @@ public class WeatherServiceImpl  implements WeatherService
         responseEntity = restTemplate.getForEntity(windSpeed, String.class);
         if(responseEntity.getStatusCode() == HttpStatus.OK)
         {
-            JSONArray jsonArray = new JSONArray(responseEntity.getBody());
-            JSONObject jsonObject = (JSONObject) jsonArray.get(0);
-            weatherColumn.setWindSpeed(jsonObject.getFloat("last_value") * ((float)5/1023) + 2);
-        }
+            JSONObject jsonObject = new JSONObject(responseEntity.getBody());
+            weatherColumn.setWindSpeed(jsonObject.getFloat("last_value"));
+            Instant instant = Instant.parse(jsonObject.getString("created_at"));        }
         else
         {
             throw  new IllegalStateException("We could not get the result");

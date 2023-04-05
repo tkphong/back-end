@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(origins = {"http://localhost:3000/", "https://weather-dmm.netlify.app/", "https://mdp-ver2.netlify.app/", "https://mdp-weather.netlify.app","https://weather-proj-api.herokuapp.com/"})
+@CrossOrigin(origins = {"http://localhost:3000/", "https://weather-dmm.netlify.app/", "https://mdp-ver2.netlify.app/", "https://mdp-weather.netlify.app"})
 @RestController
 @RequestMapping("/api")
 public class WeatherController

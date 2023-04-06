@@ -32,12 +32,18 @@ public class WeatherController
         return weatherService.getLatestRecord();
     }
 
+    // @GetMapping("/getRecords")
+    // public List<FakeRecord> getListRecords()
+    // {
+    //     // The passed in string must be in ISO format
+    //     return weatherService.getListRecords();
+    // }
     @GetMapping("/getRecords")
-    public List<FakeRecord> getListRecords()
+    public List<WeatherRecord> getListRecords()
     {
-        // The passed in string must be in ISO format
         return weatherService.getListRecords();
     }
+    
     @GetMapping("/getDiagramRecords")
     public  List<FakeRecord> getDiagramRecords()
     {

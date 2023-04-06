@@ -10,9 +10,11 @@ public interface WeatherService {
 
     WeatherRecord getLatestRecord();
 
-    List<FakeRecord> getListRecords();
+    //List<FakeRecord> getListRecords();
 
     List<FakeRecord> getDiagramRecords();
 
     WeatherColumn addLatest();
+    
+    List<WeatherRecord> getListRecords();
 }

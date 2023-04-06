@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
 import java.util.stream.Collectors;
-
+import java.util.ArrayList;
 
 @Service
 public class WeatherServiceImpl  implements WeatherService
@@ -27,10 +27,14 @@ public class WeatherServiceImpl  implements WeatherService
     private final WeatherRepository weatherRepository;
 
     private final FakeRepository fakeRepository;
+    private List<FakeRecord> diagramRecords;
+    private List<WeatherRecord> listRecords;
 
     public WeatherServiceImpl(WeatherRepository weatherRepository, FakeRepository fakeRepository) {
         this.weatherRepository = weatherRepository;
         this.fakeRepository = fakeRepository;
+        this.diagramRecords = new ArrayList<>();
+        this.listRecords = new ArrayList<>();
     }
     @Override
     public WeatherRecord getLatestRecord() {
@@ -41,24 +45,41 @@ public class WeatherServiceImpl  implements WeatherService
         return weatherRecord;
     }
 
+    // @Override
+    // public List<FakeRecord> getListRecords()
+    // {
+    //     List<FakeRow> fakeRowList = fakeRepository.findAll();
+    //     List<FakeRecord> fakeRecordList = fakeRowList
+    //     //List<FakeRecord> listRecords = fakeRowList
+    //             .stream().map(
+    //                     row -> new FakeRecord( row.getTemperature(),
+    //                             row.getHumidity(),
+    //                             row.getWindSpeed())
+    //             ).collect(Collectors.toList());
+    //     return fakeRecordList;
+    // }
     @Override
-    public List<FakeRecord> getListRecords()
-    {
-        List<FakeRow> fakeRowList = fakeRepository.findAll();
-        List<FakeRecord> fakeRecordList = fakeRowList
+    public List<WeatherRecord> getListRecords() {
+        List<WeatherColumn> weatherColumnList = weatherRepository.findAll();
+        List<WeatherRecord> weatherRecordList = weatherColumnList
                 .stream().map(
-                        row -> new FakeRecord( row.getTemperature(),
-                                row.getHumidity(),
-                                row.getWindSpeed())
+                        column -> {
+                            WeatherRecord weatherRecord = new WeatherRecord();
+                            BeanUtils.copyProperties(column, weatherRecord);
+                            weatherRecord.setTimeString(String.valueOf(column.getDateTime()));
+                            return weatherRecord;
+                        }
                 ).collect(Collectors.toList());
-        return fakeRecordList;
+        this.listRecords = weatherRecordList;
+        return weatherRecordList;
     }
 
     @Override
     public List<FakeRecord> getDiagramRecords()
     {
         List<FakeRow> fakeRowList = fakeRepository.findTop30ByOrderByIdDesc();
-        List<FakeRecord> fakeRecordList = fakeRowList
+        //List<FakeRecord> fakeRecordList = fakeRowList
+        List<FakeRecord> diagramRecords = fakeRowList
                 .stream().map(
                         row -> new FakeRecord(
                                 row.getTemperature(),
@@ -66,9 +87,15 @@ public class WeatherServiceImpl  implements WeatherService
                                 row.getWindSpeed()
                         )
                 ).collect(Collectors.toList());
-        return fakeRecordList;
+        //return fakeRecordList;
+        return diagramRecords;
     }
 
+    // @Override
+    // public List<FakeRecord> getDiagramRecords() {
+    //     return diagramRecords;
+    // }
+    
     @Override
     public WeatherColumn addLatest() {
         WeatherColumn weatherColumn = new WeatherColumn();
@@ -110,7 +137,47 @@ public class WeatherServiceImpl  implements WeatherService
         {
             throw  new IllegalStateException("We could not get the result");
         }
-        weatherRepository.save(weatherColumn);
+    //     //weatherRepository.save(weatherColumn);
+    //     //return weatherColumn;
+    //     FakeRecord fakeRecord = new FakeRecord(
+    //         weatherColumn.getTemperature(),
+    //         weatherColumn.getHumidity(),
+    //         weatherColumn.getWindSpeed()
+    // );
+
+    // // add the new FakeRecord to the diagramRecords list
+    // diagramRecords.add(fakeRecord);
+
+    // // save the weather data to the database
+    // weatherRepository.save(weatherColumn);
+
+    // return weatherColumn;
+            // add code to retrieve data from Adafruit API
+
+            FakeRecord fakeRecord = new FakeRecord(
+                weatherColumn.getTemperature(),
+                weatherColumn.getHumidity(),
+                weatherColumn.getWindSpeed()
+            );
+    
+            // add the new FakeRecord to the diagramRecords list
+            diagramRecords.add(fakeRecord);
+
+            // save the FakeRecord data to the fakeRow table
+            FakeRow fakeRow = new FakeRow(
+                fakeRecord.getTemperature(),
+                fakeRecord.getHumidity(),
+                fakeRecord.getWindSpeed()
+            );
+            fakeRepository.save(fakeRow);
+    
+            // save the weather data to the database
+            weatherRepository.save(weatherColumn);
+        // add new record to the list of records
+        WeatherRecord weatherRecord = new WeatherRecord();
+        BeanUtils.copyProperties(weatherColumn, weatherRecord);
+        weatherRecord.setTimeString(String.valueOf(weatherColumn.getDateTime()));
+        this.listRecords.add(weatherRecord);
         return weatherColumn;
     }
 }

@@ -50,3 +50,4 @@ public class WeatherController
         return weatherService.getDiagramRecords();
     }
 }
+

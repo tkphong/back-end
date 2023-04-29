@@ -152,6 +152,7 @@ public class WeatherServiceImpl  implements WeatherService
     // weatherRepository.save(weatherColumn);
 
     // return weatherColumn;
+
             // add code to retrieve data from Adafruit API
 
             FakeRecord fakeRecord = new FakeRecord(
@@ -180,4 +181,5 @@ public class WeatherServiceImpl  implements WeatherService
         this.listRecords.add(weatherRecord);
         return weatherColumn;
     }
+    
 }

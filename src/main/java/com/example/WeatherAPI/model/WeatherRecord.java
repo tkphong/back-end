@@ -7,13 +7,11 @@ public class WeatherRecord
     private String timeString;
     private Integer temperature;
     private Integer humidity;
-    private Float windSpeed;
 
-    public WeatherRecord(String timeString, Integer temperature, Integer humidity, Float windSpeed) {
+    public WeatherRecord(String timeString, Integer temperature, Integer humidity) {
         this.timeString = timeString;
         this.temperature = temperature;
         this.humidity = humidity;
-        this.windSpeed = windSpeed;
         Instant instant = Instant.parse(timeString);
     }
 
@@ -44,13 +42,6 @@ public class WeatherRecord
         this.humidity = humidity;
     }
 
-    public Float getWindSpeed() {
-        return windSpeed;
-    }
-
-    public void setWindSpeed(Float windSpeed) {
-        this.windSpeed = windSpeed;
-    }
 
 
     @Override
@@ -59,7 +50,6 @@ public class WeatherRecord
                 "timeString='" + timeString + '\'' +
                 ", temperature=" + temperature +
                 ", humidity=" + humidity +
-                ", windSpeed=" + windSpeed +
                 '}';
     }
 }

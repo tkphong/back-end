@@ -15,15 +15,13 @@ public class FakeRow {
     private Long id;
     private Integer temperature;
     private Integer humidity;
-    private Float windSpeed;
 
     public FakeRow() {
     }
 
-    public FakeRow(Integer temperature, Integer humidity, Float windSpeed) {
+    public FakeRow(Integer temperature, Integer humidity) {
         this.temperature = temperature;
         this.humidity = humidity;
-        this.windSpeed = windSpeed;
     }
 
     public Integer getTemperature() {
@@ -40,13 +38,5 @@ public class FakeRow {
 
     public void setHumidity(Integer humidity) {
         this.humidity = humidity;
-    }
-
-    public Float getWindSpeed() {
-        return windSpeed;
-    }
-
-    public void setWindSpeed(Float windSpeed) {
-        this.windSpeed = windSpeed;
     }
 }

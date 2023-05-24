@@ -5,12 +5,10 @@ public class FakeRecord
 {
     private Integer temperature;
     private Integer humidity;
-    private Float windSpeed;
 
-    public FakeRecord(Integer temperature, Integer humidity, Float windSpeed) {
+    public FakeRecord(Integer humidity,Integer temperature) {
         this.temperature = temperature;
         this.humidity = humidity;
-        this.windSpeed = windSpeed;
     }
 
     public FakeRecord() {
@@ -30,13 +28,5 @@ public class FakeRecord
 
     public void setHumidity(Integer humidity) {
         this.humidity = humidity;
-    }
-
-    public Float getWindSpeed() {
-        return windSpeed;
-    }
-
-    public void setWindSpeed(Float windSpeed) {
-        this.windSpeed = windSpeed;
     }
 }

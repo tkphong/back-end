@@ -29,34 +29,32 @@ public class WeatherColumn
             name = "date_time"
     )
     private LocalDateTime dateTime;
-    private Integer temperature;
     private Integer humidity;
-    private Float windSpeed;
+    private Integer temperature;
 
     public WeatherColumn() {
     }
 
     public WeatherColumn(Long id,
                          LocalDateTime dateTime,
-                         Integer temperature,
                          Integer humidity,
-                         Float windSpeed) {
+                         Integer temperature
+                        ) {
         this.id = id;
         this.dateTime = dateTime;
         this.temperature = temperature;
         this.humidity = humidity;
-        this.windSpeed = windSpeed;
     }
 
     public WeatherColumn(LocalDateTime dateTime,
-                         Integer temperature,
-                         Integer humidity,
-                         Float windSpeed)
+                        Integer humidity,
+                        Integer temperature
+                        )
     {
         this.dateTime = dateTime;
         this.temperature = temperature;
         this.humidity = humidity;
-        this.windSpeed = windSpeed;
+
     }
 
     public Long getId() {
@@ -91,22 +89,13 @@ public class WeatherColumn
         this.humidity = humidity;
     }
 
-    public Float getWindSpeed() {
-        return windSpeed;
-    }
-
-    public void setWindSpeed(Float windSpeed) {
-        this.windSpeed = windSpeed;
-    }
-
     @Override
     public String toString() {
         return "WeatherColumn{" +
                 "id=" + id +
                 ", dateTime=" + dateTime +
-                ", temperature=" + temperature +
                 ", humidity=" + humidity +
-                ", windSpeed=" + windSpeed +
+                ", temperature=" + temperature +
                 '}';
     }
 }

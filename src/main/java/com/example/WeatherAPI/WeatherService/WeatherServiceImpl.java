@@ -53,8 +53,8 @@ public class WeatherServiceImpl  implements WeatherService
     //     //List<FakeRecord> listRecords = fakeRowList
     //             .stream().map(
     //                     row -> new FakeRecord( row.getTemperature(),
-    //                             row.getHumidity(),
-    //                             row.getWindSpeed())
+    //                             row.getHumidity()
+    //                             )
     //             ).collect(Collectors.toList());
     //     return fakeRecordList;
     // }

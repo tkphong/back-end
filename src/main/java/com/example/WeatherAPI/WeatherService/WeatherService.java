@@ -17,4 +17,6 @@ public interface WeatherService {
     WeatherColumn addLatest();
     
     List<WeatherRecord> getListRecords();
+
+    //List<FakeRecord> getListRecords();
 }

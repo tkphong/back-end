@@ -6,9 +6,9 @@ public class FakeRecord
     private Integer temperature;
     private Integer humidity;
 
-    public FakeRecord(Integer temperature, Integer humidity) {
-        this.temperature = temperature;
+    public FakeRecord(Integer humidity, Integer temperature) {
         this.humidity = humidity;
+        this.temperature = temperature;
     }
 
     public FakeRecord() {

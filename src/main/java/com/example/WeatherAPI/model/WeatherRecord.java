@@ -5,13 +5,14 @@ import java.time.Instant;
 public class WeatherRecord
 {
     private String timeString;
-    private Integer temperature;
     private Integer humidity;
+    private Integer temperature;
 
-    public WeatherRecord(String timeString, Integer temperature, Integer humidity) {
+
+    public WeatherRecord(String timeString, Integer humidity, Integer temperature) {
         this.timeString = timeString;
-        this.temperature = temperature;
         this.humidity = humidity;
+        this.temperature = temperature;
         Instant instant = Instant.parse(timeString);
     }
 
@@ -48,8 +49,8 @@ public class WeatherRecord
     public String toString() {
         return "WeatherRecord{" +
                 "timeString='" + timeString + '\'' +
-                ", temperature=" + temperature +
                 ", humidity=" + humidity +
+                ", humidity=" + temperature +
                 '}';
     }
 }

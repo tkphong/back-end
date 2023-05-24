@@ -12,48 +12,39 @@ import java.time.LocalDateTime;
 public class WeatherColumn
 {
     @Id
-    @SequenceGenerator(
-            name = "weather_sequence",
-            sequenceName = "weather_sequence",
-            allocationSize = 1
-    )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "weather_sequence"
-    )
-    @Column(
-            updatable = false
-    )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(
             name = "date_time"
     )
     private LocalDateTime dateTime;
-    private Integer temperature;
     private Integer humidity;
+    private Integer temperature;
 
     public WeatherColumn() {
     }
 
     public WeatherColumn(Long id,
                          LocalDateTime dateTime,
-                         Integer temperature,
-                         Integer humidity
+                         Integer humidity,
+                         Integer temperature
                         ) {
         this.id = id;
         this.dateTime = dateTime;
-        this.temperature = temperature;
         this.humidity = humidity;
+        this.temperature = temperature;
+
     }
 
     public WeatherColumn(LocalDateTime dateTime,
-                         Integer temperature,
-                         Integer humidity
+                         Integer humidity,
+                         Integer temperature
                         )
     {
         this.dateTime = dateTime;
-        this.temperature = temperature;
         this.humidity = humidity;
+        this.temperature = temperature;
+
     }
 
     public Long getId() {
@@ -94,8 +85,8 @@ public class WeatherColumn
         return "WeatherColumn{" +
                 "id=" + id +
                 ", dateTime=" + dateTime +
-                ", temperature=" + temperature +
                 ", humidity=" + humidity +
+                ", temperature=" + temperature +
                 '}';
     }
 }

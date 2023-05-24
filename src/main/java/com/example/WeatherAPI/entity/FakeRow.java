@@ -13,15 +13,15 @@ public class FakeRow {
             updatable = false
     )
     private Long id;
-    private Integer temperature;
     private Integer humidity;
+    private Integer temperature;
 
     public FakeRow() {
     }
 
-    public FakeRow(Integer temperature, Integer humidity) {
-        this.temperature = temperature;
+    public FakeRow(Integer humidity, Integer temperature) {
         this.humidity = humidity;
+        this.temperature = temperature;
     }
 
     public Integer getTemperature() {

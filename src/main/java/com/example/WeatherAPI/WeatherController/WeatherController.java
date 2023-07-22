@@ -25,25 +25,16 @@ public class WeatherController
     {
         return weatherService.addLatest();
     }
-
     @GetMapping("/getLatest")
     public WeatherRecord getLatestRecord()
     {
         return weatherService.getLatestRecord();
     }
-
-    // @GetMapping("/getRecords")
-    // public List<FakeRecord> getListRecords()
-    // {
-    //     // The passed in string must be in ISO format
-    //     return weatherService.getListRecords();
-    // }
     @GetMapping("/getRecords")
     public List<WeatherRecord> getListRecords()
     {
         return weatherService.getListRecords();
     }
-    
     @GetMapping("/getDiagramRecords")
     public  List<FakeRecord> getDiagramRecords()
     {

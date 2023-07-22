@@ -1,0 +1,45 @@
+version: '3.8'
+#containers => services
+services:
+  mysql-springboot-container:
+    image: mysql:8.0.28
+    container_name: mysql-springboot-container
+    ports:
+      - 3310:3306    
+    volumes:
+      - mysql-springboot-data:/var/lib/mysql
+      - mysql-springboot-config-deamond:/etc/mysql/conf.d
+      - ./data.sql:/docker-entrypoint-initdb.d/data.sql
+    networks:
+      - backend
+    environment:
+      MYSQL_USER: weather
+      MYSQL_PASSWORD: 123456Pp@
+      MYSQL_ROOT_PASSWORD: 123456Pp@
+      MYSQL_DATABASE: weatherapi
+  springboot-docker-container:
+    image: tkphong1668/springboot-docker:v1.0.0
+    container_name: springboot-docker-container
+    ports:
+      - 8085:8083
+    volumes:
+      - ./:/app
+    networks:
+      - backend
+  fastapi-docker-container:
+    image: tkphong1668/fastapi-docker:v1.0.0
+    container_name: fastapi-docker-container
+    ports:
+      - 8000:8000
+    volumes:
+      - ~/project/machine-learning/:/app
+    networks:
+      - backend
+#create network     
+networks:
+  backend:
+    name: springboot-app-network
+    driver: bridge
+volumes:
+  mysql-springboot-data:
+  mysql-springboot-config-deamond:

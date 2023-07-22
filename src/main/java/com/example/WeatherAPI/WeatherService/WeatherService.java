@@ -10,7 +10,6 @@ public interface WeatherService {
 
     WeatherRecord getLatestRecord();
 
-    //List<FakeRecord> getListRecords();
 
     List<FakeRecord> getDiagramRecords();
 
@@ -18,5 +17,4 @@ public interface WeatherService {
     
     List<WeatherRecord> getListRecords();
 
-    //List<FakeRecord> getListRecords();
 }
